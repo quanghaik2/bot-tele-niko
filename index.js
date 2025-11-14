@@ -93,14 +93,18 @@ bot.start((ctx) => {
 });
 
 // Khởi động bot
-bot
-  .launch()
+bot.launch();
+
+// Sử dụng event thay vì .then()
+bot.telegram
+  .getMe()
   .then(() => {
     scheduler.scheduleNextCheckin(autoCheckin);
     pingUtils.startPingInterval(RENDER_URL);
+    console.log("Bot đang chạy");
   })
   .catch((err) => {
-    // Xử lý lỗi
+    console.log("Lỗi bot:", err);
   });
 
 // Xử lý dừng bot
