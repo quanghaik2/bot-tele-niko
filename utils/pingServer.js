@@ -13,7 +13,7 @@ async function pingServer(RENDER_URL) {
 }
 
 function startPingInterval(RENDER_URL) {
-  setInterval(() => pingServer(RENDER_URL), 1 * 30 * 1000);
+  setInterval(() => pingServer(RENDER_URL), 10 * 60 * 1000);
   setTimeout(() => pingServer(RENDER_URL), 5000);
 }
 
