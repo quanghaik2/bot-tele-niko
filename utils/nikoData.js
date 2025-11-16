@@ -8,7 +8,10 @@ const getEmotionsByUserId = async (user_id) => {
   try {
     const day = getCurrentDate();
     const emotions = await getMoodsByUserId(user_id);
-    return emotions[user_id][day];
+    if (Object.keys(emotions[user_id]).includes(day)) {
+      return emotions[user_id][day];
+    }
+    return null;
   } catch (error) {
     return null;
   }

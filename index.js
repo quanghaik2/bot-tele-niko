@@ -97,7 +97,7 @@ bot.command("check_niko", async (ctx) => {
     const emotion = await getEmotionsByUserId(userId);
 
     if (!emotion) {
-      return ctx.reply(`⚠️ Không tìm thấy emotion cho user ID ${userId}`);
+      return ctx.reply(`⚠️ Hôm nay bạn chưa niko`);
     }
 
     return ctx.reply(`✅ Emotion hôm nay của user ${userId} là: ${emotion}`);
@@ -111,6 +111,7 @@ bot.command("check_niko", async (ctx) => {
 bot.start((ctx) => {
   if (!scheduler.getNextCheckinTime()) {
     scheduler.scheduleNextCheckin(autoCheckin);
+    scheduler.scheduleNotify(bot);
   }
 
   ctx.reply(

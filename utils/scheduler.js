@@ -32,6 +32,29 @@ function scheduleNextCheckin(autoCheckinCallback) {
   return nextTime;
 }
 
+function scheduleNotify(bot) {
+  currentSchedule = cron.schedule(
+    `27 22 * * *`,
+    async () => {
+      const emotion = await getEmotionsByUserId("3303");
+
+      if (!emotion) {
+        bot.telegram.sendMessage(ID_CHAT, `⚠️ Hôm nay bạn chưa niko`);
+        return;
+      } else {
+        bot.telegram.sendMessage(
+          ID_CHAT,
+          `✅ Hôm nay bạn đã thực hiện niko thành công`
+        );
+        return;
+      }
+    },
+    {
+      timezone: "Asia/Ho_Chi_Minh",
+    }
+  );
+}
+
 function getNextCheckinTime() {
   return nextCheckinTime;
 }
@@ -44,4 +67,5 @@ module.exports = {
   scheduleNextCheckin,
   getNextCheckinTime,
   getAvailableTimes,
+  scheduleNotify,
 };
