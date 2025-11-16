@@ -111,7 +111,6 @@ bot.command("check_niko", async (ctx) => {
 bot.start((ctx) => {
   if (!scheduler.getNextCheckinTime()) {
     scheduler.scheduleNextCheckin(autoCheckin);
-    scheduler.scheduleNotify(bot);
   }
 
   ctx.reply(
@@ -130,6 +129,7 @@ bot.telegram
   .getMe()
   .then(() => {
     scheduler.scheduleNextCheckin(autoCheckin);
+    scheduler.scheduleNotify(bot, ID_CHAT);
     console.log("Bot đang chạy");
   })
   .catch((err) => {

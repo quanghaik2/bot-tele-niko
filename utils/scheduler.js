@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const { getEmotionsByUserId } = require("./nikoData");
 
 const AVAILABLE_TIMES = ["08:30", "14:00", "17:30"];
 let currentSchedule = null;
@@ -32,18 +33,18 @@ function scheduleNextCheckin(autoCheckinCallback) {
   return nextTime;
 }
 
-function scheduleNotify(bot) {
+function scheduleNotify(bot, idChat) {
   currentSchedule = cron.schedule(
-    `27 22 * * *`,
+    `05 17 * * *`,
     async () => {
       const emotion = await getEmotionsByUserId("3303");
 
       if (!emotion) {
-        bot.telegram.sendMessage(ID_CHAT, `⚠️ Hôm nay bạn chưa niko`);
+        bot.telegram.sendMessage(idChat, `⚠️ Hôm nay bạn chưa niko`);
         return;
       } else {
         bot.telegram.sendMessage(
-          ID_CHAT,
+          idChat,
           `✅ Hôm nay bạn đã thực hiện niko thành công`
         );
         return;
