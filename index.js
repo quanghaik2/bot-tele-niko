@@ -8,6 +8,7 @@ const pingUtils = require("./utils/pingServer");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const checkinAPI = require("./modules/checkin");
+const { getEmotionsByUserId } = require("./utils/nikoData.js");
 
 const ID_CHAT = process.env.ID_CHAT;
 const RENDER_URL = process.env.RENDER_URL;
@@ -77,6 +78,34 @@ bot.command("reset", (ctx) => {
 bot.command("ping", (ctx) => {
   pingUtils.pingServer(RENDER_URL);
   ctx.reply("🏓 Đã ping server!");
+});
+
+//Lệnh check-niko
+bot.command("check-niko", async (ctx) => {
+  try {
+    // Lấy text sau lệnh, ví dụ: "/check-niko 3303"
+    console.log("cp1");
+    const args = ctx.message.text.split(" ");
+
+    // Nếu không có userId thì báo lỗi
+    if (args.length < 2) {
+      return ctx.reply("❌ Bạn phải nhập user ID. Ví dụ: /check-niko 3303");
+    }
+
+    const userId = args[1];
+
+    // Gọi hàm của bạn
+    const emotion = await getEmotionsByUserId(userId);
+
+    if (!emotion) {
+      return ctx.reply(`⚠️ Không tìm thấy emotion cho user ID ${userId}`);
+    }
+
+    return ctx.reply(`✅ Emotion hôm nay của user ${userId} là: ${emotion}`);
+  } catch (err) {
+    console.error(err);
+    ctx.reply("❌ Đã xảy ra lỗi khi kiểm tra emotion.");
+  }
 });
 
 // Lệnh /start

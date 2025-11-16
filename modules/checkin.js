@@ -1,12 +1,16 @@
 const axios = require("axios");
 require("dotenv").config();
 
+const emotions = ["good", "normal"];
+
 module.exports = async () => {
   try {
+    const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+
     const response = await axios.post(
       "https://api.khennhau.com/niko/moods",
       {
-        emotion: "good",
+        emotion: randomEmotion,
       },
       {
         headers: {
