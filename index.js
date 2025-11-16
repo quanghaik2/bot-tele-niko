@@ -81,10 +81,9 @@ bot.command("ping", (ctx) => {
 });
 
 //Lệnh check-niko
-bot.command("check-niko", async (ctx) => {
+bot.command("check_niko", async (ctx) => {
   try {
     // Lấy text sau lệnh, ví dụ: "/check-niko 3303"
-    console.log("cp1");
     const args = ctx.message.text.split(" ");
 
     // Nếu không có userId thì báo lỗi
