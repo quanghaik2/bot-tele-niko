@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const emotions = ["good", "normal"];
 
-module.exports = async () => {
+module.exports = async (tokenNiko) => {
   try {
     const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
 
@@ -14,7 +14,7 @@ module.exports = async () => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.TOKEN_NIKO}`,
+          Authorization: `Bearer ${tokenNiko}`,
         },
       }
     );

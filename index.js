@@ -13,28 +13,36 @@ const { getEmotionsByUserId } = require("./utils/nikoData.js");
 const ID_CHAT = process.env.ID_CHAT;
 const RENDER_URL = process.env.RENDER_URL;
 
+const tokens = [
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMTg3LCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzYyOTQxMjkzLCJleHAiOjE3NjU1MzMyOTN9.id55HQVVDOcFbCYyplTh1pkTN-V3oinb0BDGWjaRhyI",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMzAzLCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzYxOTY4MDYxLCJleHAiOjE3NjQ1NjAwNjF9.zlPE_gO6wodIgVa6CS_y6-RgYL5j5l4qR6U8zxPs5yM",
+];
+
 // Hàm gọi API và gửi thông báo
 async function autoCheckin() {
   try {
-    const result = await checkinAPI();
+    for (const token of tokens) {
+      const result = await checkinAPI(token);
+      if (result) {
+        const newTime = scheduler.scheduleNextCheckin(autoCheckin);
+        const message = `✅ Checkin thành công lúc ${new Date().toLocaleString(
+          "vi-VN"
+        )}\n⏰ Lịch checkin tiếp theo: ${newTime}`;
 
-    if (result) {
-      const newTime = scheduler.scheduleNextCheckin(autoCheckin);
-      const message = `✅ Checkin thành công lúc ${new Date().toLocaleString(
-        "vi-VN"
-      )}\n⏰ Lịch checkin tiếp theo: ${newTime}`;
+        await bot.telegram.sendMessage(ID_CHAT, message);
+        return;
+      } else {
+        const message = `❌ Checkin thất bại lúc ${new Date().toLocaleString(
+          "vi-VN"
+        )}\n🔄 Sẽ thử lại sau 5 phút`;
 
-      await bot.telegram.sendMessage(ID_CHAT, message);
-    } else {
-      const message = `❌ Checkin thất bại lúc ${new Date().toLocaleString(
-        "vi-VN"
-      )}\n🔄 Sẽ thử lại sau 5 phút`;
+        await bot.telegram.sendMessage(ID_CHAT, message);
 
-      await bot.telegram.sendMessage(ID_CHAT, message);
-
-      setTimeout(() => {
-        autoCheckin();
-      }, 5 * 60 * 1000);
+        setTimeout(() => {
+          autoCheckin();
+        }, 5 * 60 * 1000);
+        return;
+      }
     }
   } catch (error) {
     const message = `💥 Lỗi hệ thống: ${error.message}\n🔄 Sẽ thử lại sau 5 phút`;
@@ -43,6 +51,7 @@ async function autoCheckin() {
     setTimeout(() => {
       autoCheckin();
     }, 5 * 60 * 1000);
+    return;
   }
 }
 
