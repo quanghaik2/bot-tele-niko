@@ -30,18 +30,12 @@ async function autoCheckin() {
         )}\n⏰ Lịch checkin tiếp theo: ${newTime}`;
 
         await bot.telegram.sendMessage(ID_CHAT, message);
-        return;
       } else {
         const message = `❌ Checkin thất bại lúc ${new Date().toLocaleString(
           "vi-VN"
-        )}\n🔄 Sẽ thử lại sau 5 phút`;
+        )}\n`;
 
         await bot.telegram.sendMessage(ID_CHAT, message);
-
-        setTimeout(() => {
-          autoCheckin();
-        }, 5 * 60 * 1000);
-        return;
       }
     }
   } catch (error) {
