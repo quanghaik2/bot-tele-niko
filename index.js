@@ -119,7 +119,8 @@ bot.start((ctx) => {
   ctx.reply(
     `🤖 Bot auto checkin đã hoạt động!\n⏰ Checkin tiếp theo: ${
       scheduler.getNextCheckinTime() || "đang khởi tạo..."
-    }\n\nCác lệnh:\n/testcheckin - Test checkin ngay\n/info - Thông tin bot\n/reset - Reset lịch checkin\n/ping - Ping server`
+    }\n\nCác lệnh:\n/testcheckin - Test checkin ngay\n/info - Thông tin bot\n/reset - Reset lịch checkin\n/ping - Ping server\n
+    /check_niko [userId] - Kiểm tra emotion Niko`
   );
 });
 
