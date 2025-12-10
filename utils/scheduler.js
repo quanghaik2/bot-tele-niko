@@ -1,7 +1,7 @@
 const cron = require("node-cron");
 const { getEmotionsByUserId } = require("./nikoData");
 
-const AVAILABLE_TIMES = ["08:30", "14:00", "17:30"];
+const AVAILABLE_TIMES = ["08:00", "09:00", "10:00"];
 let currentSchedule = null;
 let nextCheckinTime = null;
 
