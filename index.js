@@ -123,7 +123,7 @@ bot.start((ctx) => {
 });
 
 // Khởi động bot
-// bot.launch();
+bot.launch();
 pingUtils.startPingInterval(RENDER_URL);
 
 // Sử dụng event thay vì .then()
