@@ -20,7 +20,7 @@ module.exports = async (tokenNiko) => {
     );
 
     console.log("Checkin thành công:", response.data);
-    return response.data;
+    return res.status === 200;
   } catch (error) {
     console.error("Lỗi khi checkin:", error.response?.data || error.message);
     return null;

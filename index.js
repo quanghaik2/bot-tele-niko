@@ -9,44 +9,41 @@ const pingUtils = require("./utils/pingServer");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const checkinAPI = require("./modules/checkin");
 const { getEmotionsByUserId } = require("./utils/nikoData.js");
+const checkinWithRetry = require("./modules/checkinWithRetry");
+const { readAccounts } = require("./modules/auth");
 
 const ID_CHAT = process.env.ID_CHAT;
 const RENDER_URL = process.env.RENDER_URL;
 
-const tokens = [
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMzAzLCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzYyMzUzNjczLCJleHAiOjE3NjQ5NDU2NzN9.RzkxSvRZ4ZheYDqIX0NmrBMTOlFIPWiCMc-WUdb3fcc",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMTg3LCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzY0Nzc2MTgyLCJleHAiOjE3NjczNjgxODJ9.cQh1FijQwTotCKHCa2S81AMccODMY5j3mL3t7NlVYXM",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4OTcsIm9pZCI6MjIzLCJyb2xlIjoic3RhZmYiLCJpYXQiOjE3NjQ3NzYyMjEsImV4cCI6MTc2NzM2ODIyMX0.mxQz9n0kURDPMjCVzWtMWdsdDK4CdHlBR6c1NADPIhI",
-];
+// const tokens = [
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMzAzLCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzYyMzUzNjczLCJleHAiOjE3NjQ5NDU2NzN9.RzkxSvRZ4ZheYDqIX0NmrBMTOlFIPWiCMc-WUdb3fcc",
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMTg3LCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzY0Nzc2MTgyLCJleHAiOjE3NjczNjgxODJ9.cQh1FijQwTotCKHCa2S81AMccODMY5j3mL3t7NlVYXM",
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4OTcsIm9pZCI6MjIzLCJyb2xlIjoic3RhZmYiLCJpYXQiOjE3NjQ3NzYyMjEsImV4cCI6MTc2NzM2ODIyMX0.mxQz9n0kURDPMjCVzWtMWdsdDK4CdHlBR6c1NADPIhI",
+// ];
 
 // Hàm gọi API và gửi thông báo
 async function autoCheckin() {
   try {
-    for (const token of tokens) {
-      const result = await checkinAPI(token);
+    const accounts = readAccounts();
+
+    for (let i = 0; i < accounts.length; i++) {
+      const result = await checkinWithRetry(i);
+
       if (result) {
         const newTime = scheduler.scheduleNextCheckin(autoCheckin);
-        const message = `✅ Checkin thành công lúc ${new Date().toLocaleString(
-          "vi-VN"
-        )}\n⏰ Lịch checkin tiếp theo: ${newTime}`;
-
-        await bot.telegram.sendMessage(ID_CHAT, message);
+        await bot.telegram.sendMessage(
+          ID_CHAT,
+          `✅ Checkin thành công (${accounts[i].email})\n⏰ Lần tiếp theo: ${newTime}`
+        );
       } else {
-        const message = `❌ Checkin thất bại lúc ${new Date().toLocaleString(
-          "vi-VN"
-        )}\n`;
-
-        await bot.telegram.sendMessage(ID_CHAT, message);
+        await bot.telegram.sendMessage(
+          ID_CHAT,
+          `❌ Checkin thất bại (${accounts[i].email})`
+        );
       }
     }
-  } catch (error) {
-    const message = `💥 Lỗi hệ thống: ${error.message}\n🔄 Sẽ thử lại sau 5 phút`;
-    await bot.telegram.sendMessage(ID_CHAT, message);
-
-    setTimeout(() => {
-      autoCheckin();
-    }, 5 * 60 * 1000);
-    return;
+  } catch (err) {
+    await bot.telegram.sendMessage(ID_CHAT, `💥 Lỗi hệ thống: ${err.message}`);
   }
 }
 
