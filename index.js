@@ -7,7 +7,7 @@ const scheduler = require("./utils/scheduler");
 const pingUtils = require("./utils/pingServer");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const checkinAPI = require("./modules/checkin");
+// const checkinAPI = require("./modules/checkin");
 const { getEmotionsByUserId } = require("./utils/nikoData.js");
 const checkinWithRetry = require("./modules/checkinWithRetry");
 const { readAccounts } = require("./modules/auth");
@@ -123,7 +123,7 @@ bot.start((ctx) => {
 });
 
 // Khởi động bot
-bot.launch();
+// bot.launch();
 pingUtils.startPingInterval(RENDER_URL);
 
 // Sử dụng event thay vì .then()
