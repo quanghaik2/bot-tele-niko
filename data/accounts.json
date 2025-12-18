@@ -2,21 +2,29 @@
   {
     "email": "chuquanghai2002@gmail.com",
     "password": "20786984",
+    "fullname": "Chu Quang Hải",
+    "id": "3303",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMzAzLCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzY1NzAyNjA0LCJleHAiOjE3NjgyOTQ2MDR9.secKCLcnTpT0Ifq5Zc_L7neKJv1xa5vqzoupCOunjZ4"
   },
   {
     "email": "vungovu00@gmail.com",
     "password": "@hihihaha@gmail.com",
+    "fullname": "Ngô Duy Vũ",
+    "id": "3187",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMzAzLCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzY1NzAyNjA1LCJleHAiOjE3NjgyOTQ2MDV9.ZwE8JIU"
   },
   {
     "email": "loanloan24081999@gmail.com",
     "password": "Vanloan99",
+    "fullname": "Nguyễn Thị Vân Loan",
+    "id": "v897",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4OTcsIm9pZCI6MjIzLCJyb2xlIjoic3RhZmYiLCJpYXQiOjE3NjU3MDI2MDYsImV4cCI6MTc2ODI5NDYwNn0.x_IkekW9fNHnvP6UzAyLO1Vog7wn6S0kLtDHc2BXQOk"
   },
   {
     "email": "mai.chien2001ahvholding@gmail.com",
     "password": "123456789",
+    "fullname": "Mai Xuân chiến",
+    "id": "3584",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lNjU3MDI2MDYsImV4cCI6MTc2ODI5NDYwNn0.x_IkekW9fNHnvP6UzAyLO1Vog7wn6S0kLtDHc2BXQOk"
   }
 ]

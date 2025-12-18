@@ -1,9 +1,11 @@
 const cron = require("node-cron");
 const { getEmotionsByUserId } = require("./nikoData");
+const { CheckNikoUsersByDate } = require("../modules/checkNiko");
 
-const AVAILABLE_TIMES = ["08:00", "09:00", "10:00"];
-let currentSchedule = null;
+const AVAILABLE_TIMES = ["06:00", "07:00"];
+let checkinSchedule = null;
 let nextCheckinTime = null;
+let notifySchedule = null;
 
 function getRandomCheckinTime() {
   const randomIndex = Math.floor(Math.random() * AVAILABLE_TIMES.length);
@@ -11,8 +13,8 @@ function getRandomCheckinTime() {
 }
 
 function scheduleNextCheckin(autoCheckinCallback) {
-  if (currentSchedule) {
-    currentSchedule.stop();
+  if (checkinSchedule) {
+    checkinSchedule.stop();
   }
 
   const nextTime = getRandomCheckinTime();
@@ -20,7 +22,7 @@ function scheduleNextCheckin(autoCheckinCallback) {
 
   nextCheckinTime = nextTime;
 
-  currentSchedule = cron.schedule(
+  checkinSchedule = cron.schedule(
     `${minutes} ${hours} * * *`,
     async () => {
       await autoCheckinCallback();
@@ -33,21 +35,55 @@ function scheduleNextCheckin(autoCheckinCallback) {
   return nextTime;
 }
 
-function scheduleNotify(bot, idChat) {
-  currentSchedule = cron.schedule(
-    `05 17 * * *`,
-    async () => {
-      const emotion = await getEmotionsByUserId("3303");
+// function scheduleNotify(bot, idChat) {
+//   currentSchedule = cron.schedule(
+//     `05 17 * * *`,
+//     async () => {
+//       const emotion = await getEmotionsByUserId("3303");
 
-      if (!emotion) {
-        bot.telegram.sendMessage(idChat, `⚠️ Hôm nay bạn chưa niko`);
-        return;
-      } else {
+//       if (!emotion) {
+//         bot.telegram.sendMessage(idChat, `⚠️ Hôm nay bạn chưa niko`);
+//         return;
+//       } else {
+//         bot.telegram.sendMessage(
+//           idChat,
+//           `✅ Hôm nay bạn đã thực hiện niko thành công`
+//         );
+//         return;
+//       }
+//     },
+//     {
+//       timezone: "Asia/Ho_Chi_Minh",
+//     }
+//   );
+// }
+
+function scheduleNotify(bot, idChat) {
+  if (notifySchedule) {
+    notifySchedule.stop();
+  }
+
+  notifySchedule = cron.schedule(
+    "00 08 * * *",
+    async () => {
+      try {
+        const today = new Date().toISOString().split("T")[0];
+        const checking = await CheckNikoUsersByDate(today);
+
+        let notify = "";
+        for (const account of nikoAccount) {
+          if (checking[account.id] != null) {
+            notify += `${account.fullname} đã niko ngày hôm nay\n`;
+          }
+        }
+
+        bot.telegram.sendMessage(idChat, `Checkin hôm nay:\n${notify}`);
+      } catch (err) {
+        console.error(err);
         bot.telegram.sendMessage(
           idChat,
-          `✅ Hôm nay bạn đã thực hiện niko thành công`
+          "❌ Đã xảy ra lỗi khi kiểm tra emotion."
         );
-        return;
       }
     },
     {

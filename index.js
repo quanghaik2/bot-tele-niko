@@ -5,12 +5,14 @@ require("dotenv").config();
 require("./server.js");
 const scheduler = require("./utils/scheduler");
 const pingUtils = require("./utils/pingServer");
+const nikoAccount = require("./data/accounts.json");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 // const checkinAPI = require("./modules/checkin");
 const { getEmotionsByUserId } = require("./utils/nikoData.js");
 const checkinWithRetry = require("./modules/checkinWithRetry");
 const { readAccounts } = require("./modules/auth");
+const { CheckNikoUsersByDate } = require("./modules/checkNiko.js");
 
 const ID_CHAT = process.env.ID_CHAT;
 const RENDER_URL = process.env.RENDER_URL;
@@ -108,6 +110,24 @@ bot.command("check_niko", async (ctx) => {
   }
 });
 
+//Lệnh check-niko
+bot.command("checkNiKos", async (ctx) => {
+  try {
+    const today = new Date().toISOString().split("T")[0];
+    const checking = await CheckNikoUsersByDate(today);
+    let notify = "";
+    for (const account of nikoAccount) {
+      if (checking[account.id] != null) {
+        notify = notify + `${account.fullname} đã niko ngày hôm nay \n`;
+      }
+    }
+    return ctx.reply(`Checkin hôm nay: \n ${notify}`);
+  } catch (err) {
+    console.error(err);
+    ctx.reply("❌ Đã xảy ra lỗi khi kiểm tra emotion.");
+  }
+});
+
 // Lệnh /start
 bot.start((ctx) => {
   if (!scheduler.getNextCheckinTime()) {
@@ -118,7 +138,7 @@ bot.start((ctx) => {
     `🤖 Bot auto checkin đã hoạt động!\n⏰ Checkin tiếp theo: ${
       scheduler.getNextCheckinTime() || "đang khởi tạo..."
     }\n\nCác lệnh:\n/testcheckin - Test checkin ngay\n/info - Thông tin bot\n/reset - Reset lịch checkin\n/ping - Ping server\n
-    /check_niko [userId] - Kiểm tra emotion Niko`
+    /check_niko [userId] - Kiểm tra emotion Niko \n /checkNiKos - kiểm tra các thành viên đã niko hay chưa`
   );
 });
 
