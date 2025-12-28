@@ -1,6 +1,7 @@
 const cron = require("node-cron");
 const { getEmotionsByUserId } = require("./nikoData");
 const { CheckNikoUsersByDate } = require("../modules/checkNiko");
+const nikoAccount = require("../data/accounts.json");
 
 const AVAILABLE_TIMES = ["06:00", "07:00"];
 let checkinSchedule = null;
