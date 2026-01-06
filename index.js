@@ -18,12 +18,6 @@ const ID_CHAT = process.env.ID_CHAT;
 const RENDER_URL = process.env.RENDER_URL;
 scheduler.scheduleNotify(bot, ID_CHAT);
 
-// const tokens = [
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMzAzLCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzYyMzUzNjczLCJleHAiOjE3NjQ5NDU2NzN9.RzkxSvRZ4ZheYDqIX0NmrBMTOlFIPWiCMc-WUdb3fcc",
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozMTg3LCJvaWQiOjIyMywicm9sZSI6InN0YWZmIiwiaWF0IjoxNzY0Nzc2MTgyLCJleHAiOjE3NjczNjgxODJ9.cQh1FijQwTotCKHCa2S81AMccODMY5j3mL3t7NlVYXM",
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4OTcsIm9pZCI6MjIzLCJyb2xlIjoic3RhZmYiLCJpYXQiOjE3NjQ3NzYyMjEsImV4cCI6MTc2NzM2ODIyMX0.mxQz9n0kURDPMjCVzWtMWdsdDK4CdHlBR6c1NADPIhI",
-// ];
-
 // Hàm gọi API và gửi thông báo
 async function autoCheckin() {
   try {
