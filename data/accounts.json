@@ -33,5 +33,12 @@
     "fullname": "A Phúc",
     "id": "3583",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lNjU3MDI2MDYsImV4cCI6MTc2ODI5NDYwNn0.x_IkekW9fNHnvP6UzAyLO1Vog7wn6S0kLtDHc2BXQOk"
+  },
+  {
+    "email": "viettq2361998@gmail.com",
+    "password": "Viet123@",
+    "fullname": "A Việt",
+    "id": "3573",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lNjU3MDI2MDYsImV4cCI6MTc2ODI5NDYwNn0.x_IkekW9fNHnvP6UzAyLO1Vog7wn6S0kLtDHc2BXQOk"
   }
 ]
