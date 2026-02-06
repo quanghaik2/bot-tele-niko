@@ -24,13 +24,13 @@ function scheduleNextCheckin(autoCheckinCallback) {
   nextCheckinTime = nextTime;
 
   checkinSchedule = cron.schedule(
-    `${minutes} ${hours} * * *`,
+    `${minutes} ${hours} * * 1-6`,
     async () => {
       await autoCheckinCallback();
     },
     {
       timezone: "Asia/Ho_Chi_Minh",
-    }
+    },
   );
 
   return nextTime;
@@ -86,13 +86,13 @@ function scheduleNotify(bot, idChat) {
         console.error(err);
         bot.telegram.sendMessage(
           idChat,
-          "❌ Đã xảy ra lỗi khi kiểm tra emotion."
+          "❌ Đã xảy ra lỗi khi kiểm tra emotion.",
         );
       }
     },
     {
       timezone: "Asia/Ho_Chi_Minh",
-    }
+    },
   );
 }
 
