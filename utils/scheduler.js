@@ -73,11 +73,8 @@ function scheduleNotify(bot, idChat) {
 
         let notify = "";
         for (const account of nikoAccount) {
-          if (
-            checking[account.id] != null ||
-            checking[account.id] != undefined
-          ) {
-            notify += `${account.fullname} đã niko ngày hôm nay\n`;
+          if (checking[account.id] != null) {
+            notify = notify + `${account.fullname} đã niko ngày hôm nay \n`;
           }
         }
 

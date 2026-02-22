@@ -30,12 +30,12 @@ async function autoCheckin() {
         const newTime = scheduler.scheduleNextCheckin(autoCheckin);
         await bot.telegram.sendMessage(
           ID_CHAT,
-          `✅ Checkin thành công (${accounts[i].email})\n⏰ Lần tiếp theo: ${newTime}`
+          `✅ Checkin thành công (${accounts[i].email})\n⏰ Lần tiếp theo: ${newTime}`,
         );
       } else {
         await bot.telegram.sendMessage(
           ID_CHAT,
-          `❌ Checkin thất bại (${accounts[i].email})`
+          `❌ Checkin thất bại (${accounts[i].email})`,
         );
       }
     }
@@ -57,10 +57,10 @@ bot.command("info", (ctx) => {
 
   const message = nextCheckinTime
     ? `🤖 Bot auto checkin\n⏰ Checkin tiếp theo: ${nextCheckinTime}\n📅 Các khung giờ: ${availableTimes.join(
-        ", "
+        ", ",
       )}`
     : `🤖 Bot auto checkin\n⏰ Chưa có lịch checkin\n📅 Các khung giờ: ${availableTimes.join(
-        ", "
+        ", ",
       )}`;
 
   ctx.reply(message);
@@ -106,7 +106,7 @@ bot.command("check_niko", async (ctx) => {
 });
 
 //Lệnh check-niko
-bot.command("checkNiKos", async (ctx) => {
+bot.command("checkNikos", async (ctx) => {
   try {
     const today = new Date().toISOString().split("T")[0];
     const checking = await CheckNikoUsersByDate(today);
@@ -133,7 +133,7 @@ bot.start((ctx) => {
     `🤖 Bot auto checkin đã hoạt động!\n⏰ Checkin tiếp theo: ${
       scheduler.getNextCheckinTime() || "đang khởi tạo..."
     }\n\nCác lệnh:\n/testcheckin - Test checkin ngay\n/info - Thông tin bot\n/reset - Reset lịch checkin\n/ping - Ping server\n
-    /check_niko [userId] - Kiểm tra emotion Niko \n /checkNiKos - kiểm tra các thành viên đã niko hay chưa`
+    /check_niko [userId] - Kiểm tra emotion Niko \n /checkNikos - kiểm tra các thành viên đã niko hay chưa`,
   );
 });
 
